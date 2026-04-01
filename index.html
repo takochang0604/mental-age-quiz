@@ -1284,24 +1284,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   }
 
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   async function shareTo(platform) {
     const url = window.location.href;
     const age = document.getElementById('res-age').textContent;
     const title = document.getElementById('res-title').textContent;
     const text = `我的心理年齡是 ${age} 歲（${title}）！你呢？來測測看 👉`;
 
+    // 複製連結
     if (platform === 'copy') {
       navigator.clipboard.writeText(text + ' ' + url).then(() => {
         const btn = document.querySelector('.share-copy');
         const orig = btn.innerHTML;
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 已複製！';
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
         btn.style.borderColor = '#06C755';
         setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; }, 2000);
       });
       return;
     }
 
-    // 先下載結果圖
+    // ── 手機：用 Web Share API 帶圖分享 ──
+    if (isMobile() && navigator.share) {
+      try {
+        const canvas = await captureResultCard();
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        const file = new File([blob], 'my-mental-age.png', { type: 'image/png' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            text: text + ' ' + url,
+            files: [file],
+          });
+          return;
+        }
+      } catch (e) {
+        // 使用者取消或不支援，降級到下面的邏輯
+        if (e.name === 'AbortError') return;
+      }
+    }
+
+    // ── 桌面：下載圖 + 開平台 ──
     try {
       const canvas = await captureResultCard();
       const link = document.createElement('a');
@@ -1310,12 +1335,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       link.click();
     } catch(e) {}
 
-    // 顯示提示
     showShareToast(platform === 'ig'
-      ? '📸 圖片已下載、文字已複製！\n請到 IG 限動或貼文手動貼上'
+      ? '📸 圖片已下載、文字已複製！請到 IG 限動或貼文手動貼上'
       : '📸 結果圖已下載！分享時請手動貼上圖片');
 
-    // 延遲一秒再開平台（讓下載先觸發）
     setTimeout(() => {
       switch (platform) {
         case 'line':
