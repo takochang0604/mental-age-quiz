@@ -1316,19 +1316,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       : '📸 結果圖已下載！分享時請手動貼上圖片');
 
     setTimeout(() => {
+      const fullText = encodeURIComponent(text + ' ' + url);
       switch (platform) {
         case 'line':
-          window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+          // line.me/R/share 會優先開 LINE APP
+          window.open(`https://line.me/R/share?text=${fullText}`, '_blank');
           break;
         case 'ig':
           navigator.clipboard.writeText(text + ' ' + url).catch(() => {});
-          window.open('https://www.instagram.com/', '_blank');
+          // 嘗試開 IG APP，失敗則開網頁
+          window.location.href = 'instagram://';
+          setTimeout(() => { window.open('https://www.instagram.com/', '_blank'); }, 1500);
           break;
         case 'threads':
-          window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+          window.open(`https://www.threads.net/intent/post?text=${fullText}`, '_blank');
           break;
         case 'x':
-          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+          window.open(`https://x.com/intent/post?text=${fullText}`, '_blank');
           break;
       }
     }, 800);
