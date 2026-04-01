@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5SL4XJ6V');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>你幾歲的心理年齡？10題測出你靈魂的真實年紀</title>
+  <meta name="description" content="10個荒謬但準確的問題，測出你靈魂的真實年紀。你以為你很年輕，但你可能已經老到愛看保固卡了。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey:            "AIzaSyBAc8rrFgqOSmrImCZU8vPzJeKIaTTftj4",
+      authDomain:        "memorandum-3abaa.firebaseapp.com",
+      projectId:         "memorandum-3abaa",
+      storageBucket:     "memorandum-3abaa.firebasestorage.app",
+      messagingSenderId: "339882662542",
+      appId:             "1:339882662542:web:a01cd406296720318c07df"
+    });
+    window.__firestore = firebase.firestore();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d1a;
+      --card: #16162a;
+      --card2: #1e1e38;
+      --border: rgba(255,255,255,0.08);
+      --accent: #a78bfa;
+      --accent2: #60a5fa;
+      --accent3: #f472b6;
+      --text: #f0f0ff;
+      --muted: #8888aa;
+      --radius: 20px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: radial-gradient(ellipse at 20% 10%, rgba(167,139,250,0.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 80%, rgba(96,165,250,0.12) 0%, transparent 50%),
+                  var(--bg);
+    }
+
+    /* ── Stars background ── */
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute; border-radius: 50%;
+      background: white; opacity: 0;
+      animation: twinkle var(--d, 3s) var(--delay, 0s) infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: var(--op, 0.6); transform: scale(1); }
+    }
+
+    /* ── Layout ── */
+    .container {
+      position: relative; z-index: 1;
+      max-width: 680px; margin: 0 auto;
+      padding: 40px 20px 80px;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Screens ── */
+    .screen { width: 100%; display: none; animation: fadeUp 0.5s ease; }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Intro ── */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(96,165,250,0.2));
+      border: 1px solid rgba(167,139,250,0.4);
+      padding: 6px 18px; border-radius: 999px;
+      font-size: 13px; color: var(--accent);
+      margin-bottom: 28px; letter-spacing: 0.05em;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 8vw, 3.2rem);
+      font-weight: 900; line-height: 1.15;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      text-align: center; color: var(--muted);
+      font-size: 16px; line-height: 1.7;
+      max-width: 480px; margin-bottom: 48px;
+    }
+    .hero-sub strong { color: var(--accent); -webkit-text-fill-color: var(--accent); }
+
+    .emoji-strip {
+      display: flex; gap: 12px; margin-bottom: 48px;
+      font-size: 2.4rem;
+    }
+    .emoji-strip span {
+      display: inline-block;
+      animation: float var(--fd, 2s) var(--delay, 0s) ease-in-out infinite alternate;
+    }
+    @keyframes float {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-10px); }
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      color: white; border: none; cursor: pointer;
+      padding: 18px 48px; border-radius: 999px;
+      font-size: 18px; font-weight: 700;
+      font-family: inherit;
+      box-shadow: 0 8px 32px rgba(124,58,237,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(124,58,237,0.6);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* ── Quiz ── */
+    .progress-wrap {
+      width: 100%; margin-bottom: 32px;
+    }
+    .progress-header {
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .progress-bar-bg {
+      width: 100%; height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .question-card {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      margin-bottom: 24px;
+    }
+    .question-num {
+      font-size: 12px; color: var(--accent);
+      letter-spacing: 0.1em; font-weight: 700;
+      margin-bottom: 12px; text-transform: uppercase;
+    }
+    .question-text {
+      font-size: clamp(1.1rem, 4vw, 1.35rem);
+      font-weight: 700; line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .question-hint {
+      font-size: 13px; color: var(--muted);
+      margin-bottom: 28px; line-height: 1.5;
+    }
+
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn {
+      width: 100%; text-align: left;
+      background: rgba(255,255,255,0.03);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 16px 20px;
+      color: var(--text); font-size: 15px;
+      font-family: inherit; cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; gap: 14px;
+    }
+    .option-btn:hover {
+      background: rgba(167,139,250,0.1);
+      border-color: rgba(167,139,250,0.4);
+      transform: translateX(4px);
+    }
+    .option-btn.selected {
+      background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(96,165,250,0.15));
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
+    }
+    .option-btn.selected .opt-label {
+      background: var(--accent); color: white;
+    }
+    .opt-label {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-row {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; margin-top: 8px;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted); padding: 14px 28px;
+      border-radius: 999px; font-size: 15px;
+      font-family: inherit; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+    .btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .btn-next {
+      flex: 1; background: linear-gradient(135deg, var(--accent), #7c3aed);
+      color: white; border: none; cursor: pointer;
+      padding: 16px 32px; border-radius: 999px;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      transition: all 0.2s; max-width: 240px;
+    }
+    .btn-next:disabled {
+      opacity: 0.35; cursor: not-allowed; transform: none !important;
+    }
+    .btn-next:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.4); }
+
+    /* ── Result ── */
+    .result-card {
+      width: 100%;
+      background: linear-gradient(145deg, #1a1a30, #16162a);
+      border: 1px solid rgba(167,139,250,0.3);
+      border-radius: 28px;
+      padding: 44px 36px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      margin-bottom: 28px;
+    }
+    .result-card::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(167,139,250,0.2), transparent 70%);
+    }
+    .result-card::after {
+      content: '';
+      position: absolute; bottom: -60px; left: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(96,165,250,0.15), transparent 70%);
+    }
+
+    .result-emoji { font-size: 4rem; margin-bottom: 16px; display: block; }
+    .result-age-label {
+      font-size: 14px; color: var(--accent);
+      letter-spacing: 0.12em; font-weight: 700;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .result-age {
+      font-size: clamp(4rem, 20vw, 7rem);
+      font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent3) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 8px;
+    }
+    .result-age-unit { font-size: 1.5rem; font-weight: 700; color: var(--muted); margin-bottom: 24px; }
+    .result-title {
+      font-size: clamp(1.2rem, 5vw, 1.6rem);
+      font-weight: 900; margin-bottom: 14px;
+    }
+    .result-desc {
+      font-size: 15px; color: #ccc; line-height: 1.75;
+      max-width: 420px; margin: 0 auto; text-align: left;
+    }
+
+    .result-divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(167,139,250,0.3), transparent);
+      margin: 28px 0;
+    }
+
+    .traits-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; width: 100%;
+    }
+    .trait-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 16px;
+      font-size: 13px; text-align: left;
+    }
+    .trait-item .trait-icon { font-size: 1.4rem; margin-bottom: 6px; display: block; }
+    .trait-item .trait-label { color: var(--muted); font-size: 11px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .trait-item .trait-val { font-weight: 700; font-size: 14px; }
+
+    .share-hint {
+      font-size: 13px; color: var(--muted);
+      text-align: center; margin-bottom: 20px;
+    }
+    .share-hint span { color: var(--accent); }
+
+    /* ── Result hero ── */
+    .result-hero {
+      width: calc(100% + 72px); margin: -44px -36px 0;
+      border-radius: 28px 28px 0 0;
+      position: relative; overflow: hidden; flex-shrink: 0;
+      aspect-ratio: 16 / 9;
+    }
+    .result-hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block; opacity: 0.55;
+      position: absolute; inset: 0;
+    }
+    .result-hero-overlay {
+      position: absolute; inset: 0;
+      background: rgba(13,13,26,0.5);
+    }
+    .result-hero-text {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .result-hero-label {
+      font-size: 15px; color: #fff;
+      letter-spacing: 0.1em; font-weight: 700;
+      text-transform: uppercase; margin-bottom: 8px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+    }
+    .result-hero-age {
+      font-size: clamp(5rem, 22vw, 8rem);
+      font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent3) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 16px rgba(0,0,0,1)) drop-shadow(0 0 8px rgba(167,139,250,0.6));
+    }
+    .result-hero-unit { font-size: 1.8rem; font-weight: 900; color: #fff; margin-top: 6px;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.9); }
+    @media (max-width: 500px) {
+      .result-hero { width: calc(100% + 48px); margin: -32px -24px 0; }
+    }
+
+    /* ── 分享按鈕 ── */
+    .share-buttons {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin-bottom: 20px;
+    }
+    .share-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; padding: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff; font-family: inherit;
+      cursor: pointer; transition: all 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .share-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .share-btn:hover { transform: translateY(-2px); }
+    .share-line:hover { background: #06C755; border-color: #06C755; }
+    .share-ig:hover { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border-color: #dc2743; }
+    .share-threads:hover { background: #000; border-color: #fff; }
+    .share-x:hover { background: #000; border-color: #fff; }
+    .share-copy:hover { background: rgba(167,139,250,0.25); border-color: var(--accent); }
+    .share-save:hover { background: rgba(6,199,85,0.2); border-color: #06C755; }
+
+    .btn-retry {
+      background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      color: var(--muted); padding: 14px 36px;
+      border-radius: 999px; font-size: 15px;
+      font-family: inherit; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-retry:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+
+    /* ── Confetti ── */
+    .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .confetti-piece {
+      position: absolute; top: -10px;
+      width: 8px; height: 14px; border-radius: 2px;
+      animation: fall var(--dur, 2.5s) var(--delay, 0s) ease-in forwards;
+      opacity: 0;
+    }
+    @keyframes fall {
+      0%   { opacity: 1; transform: translateY(0) rotate(0deg) translateX(0); }
+      100% { opacity: 0; transform: translateY(110vh) rotate(720deg) translateX(var(--tx, 30px)); }
+    }
+
+    @media (max-width: 500px) {
+      .question-card { padding: 24px 20px; }
+      .result-card { padding: 32px 24px; }
+      .traits-grid { grid-template-columns: 1fr 1fr; }
+      .emoji-strip { font-size: 2rem; }
+    }
+
+    /* ── 計數器 ── */
+    .page-counter {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px; border-radius: 999px;
+      font-size: 13px; margin-top: 32px;
+    }
+    .counter-eye {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(167,139,250,0.3), rgba(96,165,250,0.3));
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .counter-eye svg { width: 13px; height: 13px; color: var(--accent); }
+    .counter-label { color: var(--muted); }
+    .counter-num { color: var(--text); font-weight: 700; letter-spacing: 0.04em; }
+
+    /* ── 廣告側邊欄 ── */
+    .ad-sidebar {
+      position: fixed; top: 0; right: 0; height: 100vh;
+      z-index: 1000; display: flex; align-items: center;
+      pointer-events: none;
+    }
+    .ad-toggle {
+      pointer-events: auto;
+      width: 40px; height: 52px; border: none;
+      border-radius: 12px 0 0 12px;
+      background: rgba(18,18,40,0.94);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.12); border-right: none;
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+      transition: background 0.3s; flex-shrink: 0;
+    }
+    .ad-toggle:hover { background: rgba(30,30,60,0.96); }
+    .ad-toggle .ad-toggle-icon { display: block; }
+    .ad-toggle .ad-toggle-close { display: none; font-size: 1rem; color: rgba(255,255,255,0.6); }
+    .ad-sidebar.open .ad-toggle .ad-toggle-icon { display: none; }
+    .ad-sidebar.open .ad-toggle .ad-toggle-close { display: block; }
+    .ad-panel {
+      pointer-events: auto; width: 0; overflow: hidden;
+      background: rgba(18,18,40,0.94);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-left: 1px solid rgba(255,255,255,0.12);
+      box-shadow: -6px 0 32px rgba(0,0,0,0.45);
+      transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column; height: 100vh;
+    }
+    .ad-sidebar.open .ad-panel { width: 300px; }
+    .ad-panel-header {
+      padding: 20px 20px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;
+    }
+    .ad-panel-title { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; }
+    .ad-panel-body {
+      padding: 16px; display: flex; flex-direction: column; gap: 12px;
+      flex: 1; overflow-y: auto;
+    }
+    .ad-card {
+      display: flex; align-items: center; gap: 14px; padding: 14px;
+      border-radius: 14px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none; color: inherit;
+      transition: background 0.3s, transform 0.3s, border-color 0.3s; cursor: pointer;
+    }
+    .ad-card:hover { background: rgba(255,255,255,0.1); transform: translateX(-2px); border-color: rgba(139,92,246,0.3); }
+    .ad-card-icon {
+      flex-shrink: 0; width: 60px; height: 60px;
+      border-radius: 14px; overflow: hidden;
+      background: rgba(255,255,255,0.06); transition: transform 0.3s;
+    }
+    .ad-card:hover .ad-card-icon { transform: scale(1.05); }
+    .ad-card-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ad-card-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .ad-card-name { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ad-card-desc { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+    .ad-card-arrow { flex-shrink: 0; font-size: 1.5rem; color: rgba(255,255,255,0.25); transition: color 0.3s, transform 0.3s; line-height: 1; }
+    .ad-card:hover .ad-card-arrow { color: #a78bfa; transform: translateX(3px); }
+    .ad-panel-badge {
+      padding: 12px; text-align: center; font-size: 0.7rem;
+      color: rgba(255,255,255,0.25); letter-spacing: 0.05em;
+      flex-shrink: 0; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    @media (max-width: 600px) {
+      .ad-toggle { width: 34px; height: 44px; font-size: 1rem; }
+      .ad-sidebar.open .ad-panel { width: 240px; }
+      .ad-card-icon { width: 48px; height: 48px; border-radius: 12px; }
+      .ad-card { padding: 12px; gap: 10px; }
+      .ad-card-name { font-size: 0.9rem; }
+      .ad-card-arrow { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SL4XJ6V"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<!-- 廣告側邊欄 -->
+<div class="ad-sidebar" id="ad-sidebar">
+  <button class="ad-toggle" id="ad-toggle" title="推薦內容">
+    <span class="ad-toggle-icon">⭐</span>
+    <span class="ad-toggle-close">✕</span>
+  </button>
+  <div class="ad-panel">
+    <div class="ad-panel-header">
+      <span class="ad-panel-title">⭐ 推薦內容</span>
+    </div>
+    <div class="ad-panel-body">
+      <a class="ad-card" href="https://www.twainews.com.tw/" target="_blank" rel="noopener noreferrer">
+        <div class="ad-card-icon">
+          <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/Gemini_Generated_Image_pnl4g6pnl4g6pnl4-removebg-preview.png?alt=media&token=bc2f8c80-d0c5-4405-90b9-19e7eb9cfdef" alt="TWAI NEWS">
+        </div>
+        <div class="ad-card-info">
+          <span class="ad-card-name">TWAI NEWS</span>
+          <span class="ad-card-desc">前往最新AI新聞</span>
+        </div>
+        <span class="ad-card-arrow">›</span>
+      </a>
+      <a class="ad-card" href="https://www.gametower.com.tw/games/pg/?utm_source=twainews&utm_medium=display&utm_campaign=mega_traffic_2026&utm_content=1st_banner" target="_blank" rel="noopener noreferrer">
+        <div class="ad-card-icon">
+          <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/%E7%8E%A9%E6%98%9F%E6%B4%BE%E5%B0%8D.png?alt=media&token=a0d005bf-bd6c-44b4-9402-0290fafc3581" alt="玩星派對">
+        </div>
+        <div class="ad-card-info">
+          <span class="ad-card-name">玩星派對</span>
+          <span class="ad-card-desc">立即前往遊戲</span>
+        </div>
+        <span class="ad-card-arrow">›</span>
+      </a>
+      <a class="ad-card" href="https://cmj2.com.tw/?utm_source=twainews&utm_medium=display&utm_campaign=mega_traffic_2026&utm_content=2nd_banner" target="_blank" rel="noopener noreferrer">
+        <div class="ad-card-icon">
+          <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/%E7%AB%B6%E6%8A%80%E9%BA%BB%E5%B0%872.png?alt=media&token=4e424ebb-f006-4bab-80dd-74a152b4b833" alt="競技麻將2">
+        </div>
+        <div class="ad-card-info">
+          <span class="ad-card-name">競技麻將2</span>
+          <span class="ad-card-desc">立即前往遊戲</span>
+        </div>
+        <span class="ad-card-arrow">›</span>
+      </a>
+    </div>
+    <div class="ad-panel-badge">廣告</div>
+  </div>
+</div>
+
+<div class="stars" id="stars"></div>
+
+<div class="confetti-wrap" id="confetti"></div>
+
+<div class="container">
+
+  <!-- ── INTRO ── -->
+  <div id="screen-intro" class="screen active">
+    <div class="badge">🔮 心理年齡測驗</div>
+    <h1 class="hero-title">你幾歲的<br>心理年齡？</h1>
+    <p class="hero-sub">
+      10個<strong>荒謬但準確</strong>的問題<br>
+      測出你靈魂的真實年紀<br>
+      <span style="font-size:13px; display:block; margin-top:8px;">⚠️ 建議18歲以上才能承受真相</span>
+    </p>
+    <div class="emoji-strip">
+      <span style="--fd:2s;--delay:0s">👶</span>
+      <span style="--fd:2.3s;--delay:0.3s">🧒</span>
+      <span style="--fd:2.1s;--delay:0.6s">🧑</span>
+      <span style="--fd:2.4s;--delay:0.2s">🧓</span>
+      <span style="--fd:2s;--delay:0.8s">👴</span>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">
+      <span>開始測驗</span>
+      <span>→</span>
+    </button>
+  </div>
+
+  <!-- ── QUIZ ── -->
+  <div id="screen-quiz" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-header">
+        <span id="q-count">第 1 題，共 10 題</span>
+        <span id="q-pct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <div class="question-num" id="q-num">QUESTION 01</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="question-hint" id="q-hint"></div>
+
+      <div class="options" id="options-wrap"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" id="btn-prev" onclick="prevQ()" disabled>← 上一題</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>下一題 →</button>
+    </div>
+  </div>
+
+  <!-- ── RESULT ── -->
+  <div id="screen-result" class="screen">
+    <div class="result-card" id="result-card">
+      <!-- Hero 圖片背景區 -->
+      <div class="result-hero" id="result-hero">
+        <img class="result-hero-img" id="result-hero-img" src="" alt="">
+        <div class="result-hero-overlay"></div>
+        <div class="result-hero-text">
+          <div class="result-hero-label">你的心理年齡</div>
+          <div class="result-hero-age" id="res-age"></div>
+          <div class="result-hero-unit">歲</div>
+        </div>
+      </div>
+      <!-- 內容區 -->
+      <div style="margin-top: 20px;">
+      <div class="result-title" id="res-title"></div>
+      <div class="result-desc" id="res-desc"></div>
+      <div class="result-divider"></div>
+      <canvas id="radar-canvas" width="320" height="320" style="display:block;margin:0 auto;"></canvas>
+      </div>
+    </div>
+
+    <p class="share-hint">📸 截圖分享給朋友，看看他們幾歲<br><span>#你幾歲的心理年齡</span></p>
+
+    <div class="share-buttons">
+      <button class="share-btn share-line" onclick="shareTo('line')" title="LINE">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+      </button>
+      <button class="share-btn share-ig" onclick="shareTo('ig')" title="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </button>
+      <button class="share-btn share-threads" onclick="shareTo('threads')" title="Threads">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.96-.065-1.182.408-2.256 1.33-3.022.88-.733 2.064-1.146 3.524-1.233 1.094-.065 2.11.044 3.043.288-.058-1.097-.393-1.93-.998-2.476-.68-.614-1.698-.926-3.032-.926h-.064c-1.076.013-1.96.272-2.625.77l-1.12-1.643c.953-.678 2.18-1.058 3.66-1.127l.147-.003c1.876 0 3.399.52 4.53 1.546.995.902 1.613 2.18 1.838 3.794.396.168.768.366 1.113.59 1.14.738 1.975 1.726 2.417 2.862.786 2.02.657 4.836-1.594 7.039C19.086 22.48 16.83 23.277 13.76 23.304zm-.9-5.918c1.161-.064 2.043-.467 2.621-1.2.463-.587.78-1.379.94-2.353-.94-.283-1.965-.418-3.062-.357-1.778.1-2.86.882-2.806 2.022.028.491.263.947.662 1.288.477.406 1.14.627 1.862.627.1 0 .243-.012.384-.027z"/></svg>
+      </button>
+      <button class="share-btn share-x" onclick="shareTo('x')" title="X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </button>
+      <button class="share-btn share-copy" onclick="shareTo('copy')" title="複製連結">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      </button>
+      <button class="share-btn share-save" onclick="saveResultImage()" title="儲存結果圖">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      </button>
+    </div>
+
+    <button class="btn-retry" onclick="resetQuiz()">🔄 再測一次</button>
+  </div>
+
+</div>
+
+<!-- 計數器 -->
+<div id="counter-wrap" style="position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:500; display:none;">
+  <div class="page-counter">
+    <div class="counter-eye">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </div>
+    <span class="counter-label">已有</span>
+    <span class="counter-num" id="counter-num">—</span>
+    <span class="counter-label">人測過</span>
+  </div>
+</div>
+
+<script>
+  // ── Stars ──
+  (function() {
+    const wrap = document.getElementById('stars');
+    for (let i = 0; i < 60; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%; top:${Math.random()*100}%;
+        --d:${(Math.random()*3+2).toFixed(1)}s;
+        --delay:${(Math.random()*4).toFixed(1)}s;
+        --op:${(Math.random()*0.5+0.3).toFixed(2)};
+      `;
+      wrap.appendChild(s);
+    }
+  })();
+
+  // ── Questions ──
+  // 依據研究：心理年齡由 好奇心/開放性、社交品質、情緒調節、身體感知、變化適應力、生活掌控感 決定
+  // 評分：A=0（心理較年輕）/ B=1 / C=2 / D=3（心理較年長）
+  // 總分 0–30，均勻分布
+  const questions = [
+    {
+      // 維度：好奇心與開放性（研究顯示好奇心高者主觀年齡顯著較低）
+      text: '你上次主動去學一件「完全不熟的新事物」是什麼時候？',
+      hint: '例如新語言、新軟體、新樂器，工作必要的不算',
+      options: [
+        { label: '最近就有，我很喜歡嘗試新東西', score: 0 },
+        { label: '幾個月前，後來沒繼續', score: 1 },
+        { label: '說真的，好幾年前了', score: 2 },
+        { label: '我學那麼多幹嘛，會用的就夠了', score: 3 },
+      ]
+    },
+    {
+      // 維度：社交品質（高品質社交是心理年齡年輕的核心指標）
+      text: '上週你跟朋友的互動，大概是什麼狀態？',
+      hint: '「朋友」是指你主動聯繫或見面的人，不是家人',
+      options: [
+        { label: '有見面或深聊，感覺充電了', score: 0 },
+        { label: '有傳訊息，但沒有深入聊', score: 1 },
+        { label: '看了對方限時動態，沒有聯絡', score: 2 },
+        { label: '沒有，那個圈子久了就散了', score: 3 },
+      ]
+    },
+    {
+      // 維度：情緒調節（情緒彈性與恢復速度是主觀年齡的關鍵預測因子）
+      text: '你遇到一個讓你煩的事，通常多久能恢復正常？',
+      hint: '指心情真的平靜下來，不是壓下去',
+      options: [
+        { label: '當天消化掉，隔天就好了', score: 0 },
+        { label: '幾天，轉移注意力才行', score: 1 },
+        { label: '要很久，我不太會放下', score: 2 },
+        { label: '很多事我選擇不去感覺了', score: 3 },
+      ]
+    },
+    {
+      // 維度：開放性格（對新觀點的接受度與心理年齡密切相關）
+      text: '有人跟你說「你這個觀念是錯的」，你的第一反應？',
+      hint: '假設對方是認真的，不是在吵架',
+      options: [
+        { label: '有可能耶，我願意聽聽看', score: 0 },
+        { label: '先抗拒，但事後可能想一想', score: 1 },
+        { label: '我通常覺得自己的方式沒問題', score: 2 },
+        { label: '活這麼久了，我的判斷不會錯', score: 3 },
+      ]
+    },
+    {
+      // 維度：身體感知（身體疲勞感與自覺健康是主觀年齡的直接指標）
+      text: '你對自己「身體狀態」的感受，最接近哪一個？',
+      hint: '誠實回答，不要比較別人',
+      options: [
+        { label: '整體還不錯，精力算充足', score: 0 },
+        { label: '還可以，偶爾覺得累', score: 1 },
+        { label: '容易累，很多事提不起勁', score: 2 },
+        { label: '身體常常在抗議，有些事不做了', score: 3 },
+      ]
+    },
+    {
+      // 維度：變化適應力（能否適應環境變化是心理成熟感的核心）
+      text: '你的生活突然需要做一個「大改變」，你的態度比較像？',
+      hint: '例如換工作、搬家、改變習慣',
+      options: [
+        { label: '有點緊張，但我會去試', score: 0 },
+        { label: '需要時間，慢慢來還是可以', score: 1 },
+        { label: '很抗拒，穩定對我比較重要', score: 2 },
+        { label: '不要改了，改了也不見得更好', score: 3 },
+      ]
+    },
+    {
+      // 維度：生活掌控感（主動感vs被動感與主觀年齡高度相關）
+      text: '你覺得自己的生活，是「你在推」還是「被推著走」？',
+      hint: '工作、關係、健康都算在內',
+      options: [
+        { label: '大部分是我在決定方向', score: 0 },
+        { label: '一半一半，有些失控', score: 1 },
+        { label: '很多事都是配合別人或環境', score: 2 },
+        { label: '說不清楚，時間就這樣過了', score: 3 },
+      ]
+    },
+    {
+      // 維度：好奇心（對世界的興趣感是維持年輕感的關鍵）
+      text: '隨便一個你沒聽過的話題，你的反應比較接近？',
+      hint: '例如朋友突然聊一個你完全不懂的事',
+      options: [
+        { label: '來來來，講給我聽', score: 0 },
+        { label: '可以聽，但興趣沒很大', score: 1 },
+        { label: '聽了也不會記，所以懶得聽', score: 2 },
+        { label: '跟我有什麼關係', score: 3 },
+      ]
+    },
+    {
+      // 維度：社交孤獨感（孤獨感加速心理老化，有研究支持）
+      text: '你有「能說真心話」的人嗎？',
+      hint: '能說的意思是說了對方真的會聽，不是敷衍你',
+      options: [
+        { label: '有，不只一個', score: 0 },
+        { label: '有一個，但不常聊', score: 1 },
+        { label: '說不太確定，好像有又好像沒有', score: 2 },
+        { label: '沒有，什麼話都是自己消化', score: 3 },
+      ]
+    },
+    {
+      // 維度：對未來的態度（對未來的期待感是主觀年齡年輕的標誌）
+      text: '提到「三年後的你」，你的直覺反應是？',
+      hint: '第一個浮現的感覺是什麼',
+      options: [
+        { label: '有點期待，我有想做的事', score: 0 },
+        { label: '不確定，但應該還好', score: 1 },
+        { label: '不想太多，過好現在就好', score: 2 },
+        { label: '想也沒用，又不知道會發生什麼', score: 3 },
+      ]
+    },
+  ];
+
+  const results = [
+    {
+      // age 12–23 → total 0–5
+      min: 0, max: 5,
+      image: 'img_forever18.png',
+      title: '活力充沛型',
+      desc: '好奇心旺盛，對新事物來者不拒。社交圈活躍、情緒恢復得快、對未來有明確的期待。你的內在節奏比多數人快，停下來對你來說反而不自在。',
+      scores: { curiosity: 90, social: 88, emotion: 85, body: 80, adaptable: 92 }
+    },
+    {
+      // age 24–33 → total 6–10
+      min: 6, max: 10,
+      image: 'img_wavering.png',
+      title: '輕熟搖擺型',
+      desc: '大部分狀態還不錯，但有些地方開始有點卡住了。好奇心還在，行動力少了一點。社交還有，但主動性降了。你正站在一個往哪裡走都可以的位置上。',
+      scores: { curiosity: 65, social: 60, emotion: 62, body: 58, adaptable: 68 }
+    },
+    {
+      // age 34–48 → total 11–17
+      min: 11, max: 17,
+      image: 'img_midage.png',
+      title: '穩定固化型',
+      desc: '你很清楚自己要什麼、不要什麼。習慣固定、生活穩定、對變化沒太大興趣。你的世界運轉得很順，但也很少出現意料之外的事。',
+      scores: { curiosity: 42, social: 45, emotion: 50, body: 48, adaptable: 38 }
+    },
+    {
+      // age 49–62 → total 18–24
+      min: 18, max: 24,
+      image: 'img_tea.png',
+      title: '內斂沉澱型',
+      desc: '你的社交圈小但夠用，情緒習慣自己處理，對外在世界的興趣不算高。生活節奏慢，內在世界安靜。你不太需要別人來定義你的狀態。',
+      scores: { curiosity: 28, social: 25, emotion: 35, body: 38, adaptable: 22 }
+    },
+    {
+      // age 63–75 → total 25–30
+      min: 25, max: 30,
+      image: 'img_warranty.png',
+      title: '沉穩老靈魂型',
+      desc: '你對世界的態度是「看過了」。不太好奇、不太社交、不太想變。你的生活像一本早就翻完的書，現在只是偶爾回去看幾頁喜歡的段落。',
+      scores: { curiosity: 12, social: 15, emotion: 20, body: 25, adaptable: 10 }
+    },
+  ];
+
+
+
+  let currentQ = 0;
+  let answers = new Array(questions.length).fill(null);
+
+  function startQuiz() {
+    showScreen('quiz');
+    renderQuestion(0);
+  }
+
+  function renderQuestion(idx) {
+    const q = questions[idx];
+    currentQ = idx;
+
+    document.getElementById('q-count').textContent = `第 ${idx + 1} 題，共 ${questions.length} 題`;
+    const pct = Math.round((idx / questions.length) * 100);
+    document.getElementById('q-pct').textContent = pct + '%';
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('q-num').textContent = `QUESTION ${String(idx + 1).padStart(2, '0')}`;
+    document.getElementById('q-text').textContent = q.text;
+    document.getElementById('q-hint').textContent = q.hint;
+
+    const wrap = document.getElementById('options-wrap');
+    wrap.innerHTML = '';
+
+    const labels = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn' + (answers[idx] === oi ? ' selected' : '');
+      btn.innerHTML = `<span class="opt-label">${labels[oi]}</span><span>${opt.label}</span>`;
+      btn.onclick = () => selectOption(oi);
+      wrap.appendChild(btn);
+    });
+
+    document.getElementById('btn-prev').disabled = idx === 0;
+    updateNextBtn();
+
+    // animate card
+    const card = document.getElementById('question-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'fadeUp 0.35s ease';
+  }
+
+  function selectOption(oi) {
+    answers[currentQ] = oi;
+    document.querySelectorAll('.option-btn').forEach((btn, i) => {
+      btn.classList.toggle('selected', i === oi);
+    });
+    updateNextBtn();
+  }
+
+  function updateNextBtn() {
+    const btn = document.getElementById('btn-next');
+    const isLast = currentQ === questions.length - 1;
+    btn.disabled = answers[currentQ] === null;
+    btn.textContent = isLast ? '看結果 ✨' : '下一題 →';
+  }
+
+  function nextQ() {
+    if (answers[currentQ] === null) return;
+    if (currentQ < questions.length - 1) {
+      renderQuestion(currentQ + 1);
+    } else {
+      showResult();
+    }
+  }
+
+  function prevQ() {
+    if (currentQ > 0) renderQuestion(currentQ - 1);
+  }
+
+  function showResult() {
+    // calculate score
+    let total = 0;
+    answers.forEach((ai, qi) => {
+      if (ai !== null) total += questions[qi].options[ai].score;
+    });
+
+    // map to age
+    const minScore = 0, maxScore = questions.length * 3;
+    const minAge = 12, maxAge = 75;
+    const pct = total / maxScore;
+    const age = Math.round(minAge + pct * (maxAge - minAge));
+
+    const res = results.find(r => total >= r.min && total <= r.max) || results[results.length - 1];
+
+    document.getElementById('res-age').textContent = age;
+    document.getElementById('res-title').textContent = res.title;
+    document.getElementById('res-desc').textContent = res.desc;
+
+    // 插圖
+    const heroImg = document.getElementById('result-hero-img');
+    if (heroImg && res.image) {
+      heroImg.src = res.image;
+      heroImg.alt = res.title;
+    }
+
+    // 雷達圖
+    showScreen('result');
+    setTimeout(() => drawRadar(res.scores), 50);
+
+    // update progress to 100%
+    document.getElementById('progress-fill').style.width = '100%';
+    setTimeout(launchConfetti, 300);
+  }
+
+  function drawRadar(scores) {
+    const canvas = document.getElementById('radar-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+    const R = Math.min(W, H) * 0.34;
+    const labels = ['好奇心', '社交品質', '情緒彈性', '體力感受', '適應力'];
+    const vals = [scores.curiosity, scores.social, scores.emotion, scores.body, scores.adaptable];
+    const n = labels.length;
+    const accent = '#a78bfa', accent2 = '#60a5fa';
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Grid rings
+    [0.33, 0.66, 1].forEach(ratio => {
+      ctx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+        const x = cx + R * ratio * Math.cos(ang);
+        const y = cy + R * ratio * Math.sin(ang);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(167,139,250,0.18)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // Axis lines
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + R * Math.cos(ang), cy + R * Math.sin(ang));
+      ctx.strokeStyle = 'rgba(167,139,250,0.22)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Data polygon fill
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const ratio = vals[i] / 100;
+      const x = cx + R * ratio * Math.cos(ang);
+      const y = cy + R * ratio * Math.sin(ang);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+    grad.addColorStop(0, 'rgba(167,139,250,0.45)');
+    grad.addColorStop(1, 'rgba(96,165,250,0.25)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Dots
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const ratio = vals[i] / 100;
+      const x = cx + R * ratio * Math.cos(ang);
+      const y = cy + R * ratio * Math.sin(ang);
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Labels
+    ctx.font = 'bold 13px Noto Sans TC, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const labelR = R + 32;
+      const x = cx + labelR * Math.cos(ang);
+      const y = cy + labelR * Math.sin(ang);
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText(labels[i], x, y);
+    }
+  }
+
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    answers = new Array(questions.length).fill(null);
+    currentQ = 0;
+    showScreen('intro');
+  }
+
+  function captureResultCard() {
+    return new Promise((resolve) => {
+      const age = document.getElementById('res-age').textContent;
+      const title = document.getElementById('res-title').textContent;
+      const desc = document.getElementById('res-desc').textContent;
+      const heroImg = document.getElementById('result-hero-img');
+      const res = results.find(r => r.image === heroImg.src.split('/').pop()) || results[0];
+      // 找到當前結果
+      let total = 0;
+      answers.forEach((ai, qi) => { if (ai !== null) total += questions[qi].options[ai].score; });
+      const currentRes = results.find(r => total >= r.min && total <= r.max) || results[results.length - 1];
+
+      const W = 720, H = 1280;
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      // 背景
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+      bgGrad.addColorStop(0, '#0d0d1a');
+      bgGrad.addColorStop(0.5, '#151530');
+      bgGrad.addColorStop(1, '#0d0d1a');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // 載入圖片後繪製
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        // Hero 圖片區（裁切到固定高度）
+        const heroH = 400;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, W, heroH);
+        ctx.clip();
+
+        // 圖片填滿（cover 效果）
+        const imgRatio = img.width / img.height;
+        const areaRatio = W / heroH;
+        let drawW, drawH, offsetX = 0, offsetY = 0;
+        if (imgRatio > areaRatio) {
+          drawH = heroH;
+          drawW = heroH * imgRatio;
+          offsetX = (W - drawW) / 2;
+        } else {
+          drawW = W;
+          drawH = W / imgRatio;
+          offsetY = (heroH - drawH) / 2;
+        }
+        ctx.globalAlpha = 0.6;
+        ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+        ctx.globalAlpha = 1;
+
+        // 遮罩
+        const overlay = ctx.createLinearGradient(0, 0, 0, heroH);
+        overlay.addColorStop(0, 'rgba(13,13,26,0.3)');
+        overlay.addColorStop(1, 'rgba(13,13,26,0.85)');
+        ctx.fillStyle = overlay;
+        ctx.fillRect(0, 0, W, heroH);
+        ctx.restore();
+
+        // 「你的心理年齡」標籤
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 22px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('你的心理年齡', W / 2, 120);
+
+        // 年齡數字
+        ctx.font = '900 140px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = '#e8d5ff';
+        ctx.fillText(age, W / 2, 280);
+
+        // 「歲」
+        ctx.font = '900 36px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = '#fff';
+        ctx.fillText('歲', W / 2, 330);
+
+        // 分隔線
+        const lineY = 420;
+        const lineGrad = ctx.createLinearGradient(60, lineY, W - 60, lineY);
+        lineGrad.addColorStop(0, 'transparent');
+        lineGrad.addColorStop(0.5, 'rgba(167,139,250,0.4)');
+        lineGrad.addColorStop(1, 'transparent');
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(60, lineY); ctx.lineTo(W - 60, lineY); ctx.stroke();
+
+        // 標題
+        ctx.fillStyle = '#fff';
+        ctx.font = '900 36px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, W / 2, 480);
+
+        // 描述（自動換行）
+        ctx.font = '400 22px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = '#ccc';
+        ctx.textAlign = 'left';
+        const maxW = W - 120;
+        let words = desc;
+        let line = '';
+        let dy = 530;
+        for (let i = 0; i < words.length; i++) {
+          const testLine = line + words[i];
+          if (ctx.measureText(testLine).width > maxW) {
+            ctx.fillText(line, 60, dy);
+            line = words[i];
+            dy += 34;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line, 60, dy);
+
+        // 雷達圖
+        const scores = currentRes.scores;
+        const labels = ['好奇心', '社交品質', '情緒彈性', '體力感受', '適應力'];
+        const vals = [scores.curiosity, scores.social, scores.emotion, scores.body, scores.adaptable];
+        const n = 5;
+        const cx = W / 2, cy = 880, R = 150;
+
+        // 網格
+        [0.33, 0.66, 1].forEach(ratio => {
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+            const x = cx + R * ratio * Math.cos(ang);
+            const y = cy + R * ratio * Math.sin(ang);
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = 'rgba(167,139,250,0.2)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+
+        // 軸線
+        for (let i = 0; i < n; i++) {
+          const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + R * Math.cos(ang), cy + R * Math.sin(ang));
+          ctx.strokeStyle = 'rgba(167,139,250,0.2)';
+          ctx.stroke();
+        }
+
+        // 資料多邊形
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const r = (vals[i] / 100) * R;
+          const x = cx + r * Math.cos(ang);
+          const y = cy + r * Math.sin(ang);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+        grad.addColorStop(0, 'rgba(167,139,250,0.45)');
+        grad.addColorStop(1, 'rgba(96,165,250,0.25)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = '#a78bfa';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // 節點
+        for (let i = 0; i < n; i++) {
+          const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const r = (vals[i] / 100) * R;
+          ctx.beginPath();
+          ctx.arc(cx + r * Math.cos(ang), cy + r * Math.sin(ang), 5, 0, Math.PI * 2);
+          ctx.fillStyle = '#fff';
+          ctx.fill();
+          ctx.strokeStyle = '#a78bfa';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+
+        // 標籤
+        ctx.font = 'bold 18px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        for (let i = 0; i < n; i++) {
+          const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const lr = R + 40;
+          ctx.fillText(labels[i], cx + lr * Math.cos(ang), cy + lr * Math.sin(ang) + 6);
+        }
+
+        // Hashtag 底部
+        ctx.textAlign = 'center';
+        ctx.font = '400 20px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = 'rgba(167,139,250,0.7)';
+        ctx.fillText('#你幾歲的心理年齡', W / 2, H - 60);
+        ctx.font = '400 16px "Noto Sans TC", sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillText(window.location.href, W / 2, H - 30);
+
+        resolve(canvas);
+      };
+      img.onerror = () => {
+        // 圖片載入失敗也要 resolve
+        ctx.fillStyle = '#fff';
+        ctx.font = '900 140px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(age, W / 2, 280);
+        resolve(canvas);
+      };
+      img.src = heroImg.src;
+    });
+  }
+
+  async function shareTo(platform) {
+    const url = window.location.href;
+    const age = document.getElementById('res-age').textContent;
+    const title = document.getElementById('res-title').textContent;
+    const text = `我的心理年齡是 ${age} 歲（${title}）！你呢？來測測看 👉`;
+
+    if (platform === 'copy') {
+      navigator.clipboard.writeText(text + ' ' + url).then(() => {
+        const btn = document.querySelector('.share-copy');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 已複製！';
+        btn.style.borderColor = '#06C755';
+        setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; }, 2000);
+      });
+      return;
+    }
+
+    // 先下載結果圖
+    try {
+      const canvas = await captureResultCard();
+      const link = document.createElement('a');
+      link.download = 'my-mental-age.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch(e) {}
+
+    // 顯示提示
+    showShareToast(platform === 'ig'
+      ? '📸 圖片已下載、文字已複製！\n請到 IG 限動或貼文手動貼上'
+      : '📸 結果圖已下載！分享時請手動貼上圖片');
+
+    // 延遲一秒再開平台（讓下載先觸發）
+    setTimeout(() => {
+      switch (platform) {
+        case 'line':
+          window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+          break;
+        case 'ig':
+          navigator.clipboard.writeText(text + ' ' + url).catch(() => {});
+          window.open('https://www.instagram.com/', '_blank');
+          break;
+        case 'threads':
+          window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+          break;
+        case 'x':
+          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+          break;
+      }
+    }, 800);
+  }
+
+  function showShareToast(msg) {
+    let toast = document.getElementById('share-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'share-toast';
+      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(13,13,26,0.95);border:1px solid rgba(167,139,250,0.3);color:#fff;padding:14px 24px;border-radius:16px;font-size:14px;z-index:9999;opacity:0;transition:all 0.3s;backdrop-filter:blur(12px);text-align:center;max-width:320px;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg || '📸 結果圖已下載！分享時請手動貼上圖片';
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 4000);
+  }
+
+  async function saveResultImage() {
+    const btn = document.querySelector('.share-save');
+    const origHTML = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 產生中...';
+    btn.disabled = true;
+
+    try {
+      const canvas = await captureResultCard();
+      const link = document.createElement('a');
+      link.download = 'my-mental-age.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 已儲存！';
+      btn.style.borderColor = '#06C755';
+      setTimeout(() => { btn.innerHTML = origHTML; btn.style.borderColor = ''; btn.disabled = false; }, 2000);
+    } catch (e) {
+      btn.innerHTML = origHTML;
+      btn.disabled = false;
+      alert('截圖失敗，請手動截圖分享');
+    }
+  }
+
+
+  function launchConfetti() {
+    const wrap = document.getElementById('confetti');
+    wrap.innerHTML = '';
+    const colors = ['#a78bfa','#60a5fa','#f472b6','#fbbf24','#34d399'];
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        --dur: ${(Math.random() * 1.5 + 2).toFixed(1)}s;
+        --delay: ${(Math.random() * 1.2).toFixed(2)}s;
+        --tx: ${(Math.random() * 120 - 60).toFixed(0)}px;
+        transform: rotate(${Math.random() * 360}deg);
+      `;
+      wrap.appendChild(p);
+    }
+    setTimeout(() => { wrap.innerHTML = ''; }, 4000);
+  }
+
+  // ── 廣告側邊欄初始化 ──
+  (function initAdSidebar() {
+    const sidebar = document.getElementById('ad-sidebar');
+    const toggle  = document.getElementById('ad-toggle');
+    if (!sidebar || !toggle) return;
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!sidebar.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+  })();
+
+  // ── Firebase 計數器 ──
+  (function initCounter() {
+    const db = window.__firestore;
+    if (!db) return;
+    const counterRef = db.collection('counters').doc('mental-age');
+    counterRef.update({
+      views: firebase.firestore.FieldValue.increment(1)
+    }).catch(function() {
+      return counterRef.set({ views: 1 });
+    }).then(function() {
+      return counterRef.get();
+    }).then(function(doc) {
+      if (doc && doc.exists) {
+        const num = doc.data().views;
+        document.getElementById('counter-num').textContent = num.toLocaleString();
+        document.getElementById('counter-wrap').style.display = 'block';
+      }
+    }).catch(function(err) {
+      console.error('Counter error:', err);
+    });
+  })();
+</script>
+</body>
+</html>
