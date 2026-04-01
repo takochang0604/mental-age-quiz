@@ -1284,9 +1284,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   }
 
-  function isMobile() {
-    return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
 
   async function shareTo(platform) {
     const url = window.location.href;
@@ -1294,7 +1291,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const title = document.getElementById('res-title').textContent;
     const text = `我的心理年齡是 ${age} 歲（${title}）！你呢？來測測看 👉`;
 
-    // 複製連結
     if (platform === 'copy') {
       navigator.clipboard.writeText(text + ' ' + url).then(() => {
         const btn = document.querySelector('.share-copy');
@@ -1306,27 +1302,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
 
-    // ── 手機：用 Web Share API 帶圖分享 ──
-    if (isMobile() && navigator.share) {
-      try {
-        const canvas = await captureResultCard();
-        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
-        const file = new File([blob], 'my-mental-age.png', { type: 'image/png' });
-
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            text: text + ' ' + url,
-            files: [file],
-          });
-          return;
-        }
-      } catch (e) {
-        // 使用者取消或不支援，降級到下面的邏輯
-        if (e.name === 'AbortError') return;
-      }
-    }
-
-    // ── 桌面：下載圖 + 開平台 ──
+    // 下載結果圖
     try {
       const canvas = await captureResultCard();
       const link = document.createElement('a');
