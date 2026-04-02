@@ -1285,57 +1285,125 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
 
+  // ── 偵測 LINE 內建瀏覽器 ──
+  function isLineIAB() {
+    return /Line/i.test(navigator.userAgent);
+  }
+
+  // ── 跨瀏覽器複製文字（含 LINE IAB fallback）──
+  function copyTextFallback(str) {
+    // 優先用 Clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(str).catch(() => execCopyFallback(str));
+    }
+    return execCopyFallback(str);
+  }
+  function execCopyFallback(str) {
+    return new Promise((resolve) => {
+      const ta = document.createElement('textarea');
+      ta.value = str;
+      ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(ta);
+      resolve();
+    });
+  }
+
+  // ── 跨瀏覽器下載圖片（含 LINE IAB fallback）──
+  function downloadCanvasImage(canvas, filename) {
+    // 嘗試用 blob + object URL，相容性更好
+    try {
+      canvas.toBlob(function(blob) {
+        if (!blob) { fallbackDataURLDownload(canvas, filename); return; }
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        // 延遲清除避免太早回收
+        setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(blobUrl); }, 500);
+      }, 'image/png');
+    } catch(e) {
+      fallbackDataURLDownload(canvas, filename);
+    }
+  }
+  function fallbackDataURLDownload(canvas, filename) {
+    const dataUrl = canvas.toDataURL('image/png');
+    // LINE IAB 可能阻擋 a.click()，改用 window.open 顯示圖片讓使用者長按儲存
+    if (isLineIAB()) {
+      window.open(dataUrl, '_self');
+    } else {
+      const a = document.createElement('a');
+      a.download = filename;
+      a.href = dataUrl;
+      a.click();
+    }
+  }
+
+  // ── 跨瀏覽器開啟連結（LINE IAB 相容）──
+  function openUrl(url) {
+    // LINE IAB 中 window.open('_blank') 經常被攔截
+    // 先嘗試 window.open，失敗則改用 location.href
+    if (isLineIAB()) {
+      // 在 LINE IAB 中直接用 location.href 跳轉最可靠
+      window.location.href = url;
+    } else {
+      var w = window.open(url, '_blank');
+      if (!w || w.closed || typeof w.closed === 'undefined') {
+        window.location.href = url;
+      }
+    }
+  }
+
   async function shareTo(platform) {
     const url = window.location.href;
     const age = document.getElementById('res-age').textContent;
     const title = document.getElementById('res-title').textContent;
     const text = `我的心理年齡是 ${age} 歲（${title}）！你呢？來測測看 👉`;
+    const fullText = encodeURIComponent(text + ' ' + url);
 
+    // ── 複製連結 ──
     if (platform === 'copy') {
-      navigator.clipboard.writeText(text + ' ' + url).then(() => {
-        const btn = document.querySelector('.share-copy');
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-        btn.style.borderColor = '#06C755';
-        setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; }, 2000);
-      });
+      await copyTextFallback(text + ' ' + url);
+      const btn = document.querySelector('.share-copy');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+      btn.style.borderColor = '#06C755';
+      setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; }, 2000);
+      showShareToast('✅ 已複製到剪貼簿！');
       return;
     }
 
-    // 下載結果圖
-    try {
-      const canvas = await captureResultCard();
-      const link = document.createElement('a');
-      link.download = 'my-mental-age.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch(e) {}
+    // ── IG：複製文字 + 提示 → 開 IG 網頁 ──
+    if (platform === 'ig') {
+      await copyTextFallback(text + ' ' + url);
+      showShareToast('📸 文字已複製！請到 IG 限動或貼文手動貼上');
+      setTimeout(() => openUrl('https://www.instagram.com/'), 600);
+      return;
+    }
 
-    showShareToast(platform === 'ig'
-      ? '📸 圖片已下載、文字已複製！請到 IG 限動或貼文手動貼上'
-      : '📸 結果圖已下載！分享時請手動貼上圖片');
-
-    setTimeout(() => {
-      const fullText = encodeURIComponent(text + ' ' + url);
-      switch (platform) {
-        case 'line':
-          // line.me/R/share 會優先開 LINE APP
-          window.open(`https://line.me/R/share?text=${fullText}`, '_blank');
-          break;
-        case 'ig':
-          navigator.clipboard.writeText(text + ' ' + url).catch(() => {});
-          // 嘗試開 IG APP，失敗則開網頁
-          window.location.href = 'instagram://';
-          setTimeout(() => { window.open('https://www.instagram.com/', '_blank'); }, 1500);
-          break;
-        case 'threads':
-          window.open(`https://www.threads.net/intent/post?text=${fullText}`, '_blank');
-          break;
-        case 'x':
-          window.open(`https://x.com/intent/post?text=${fullText}`, '_blank');
-          break;
-      }
-    }, 800);
+    // ── LINE / Threads / X：直接跳分享連結 ──
+    let shareUrl = '';
+    switch (platform) {
+      case 'line':
+        // line.me/R/share 在 LINE IAB 中直接開啟分享面板
+        shareUrl = `https://line.me/R/share?text=${fullText}`;
+        break;
+      case 'threads':
+        shareUrl = `https://www.threads.net/intent/post?text=${fullText}`;
+        break;
+      case 'x':
+        shareUrl = `https://x.com/intent/post?text=${fullText}`;
+        break;
+    }
+    if (shareUrl) {
+      openUrl(shareUrl);
+    }
   }
 
   function showShareToast(msg) {
@@ -1363,18 +1431,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     try {
       const canvas = await captureResultCard();
-      const link = document.createElement('a');
-      link.download = 'my-mental-age.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
 
+      if (isLineIAB()) {
+        // LINE IAB 中 a.click() 下載通常被攔截
+        // 改開圖片頁面讓使用者長按儲存
+        const dataUrl = canvas.toDataURL('image/png');
+        const imgWin = window.open('', '_self');
+        if (imgWin) {
+          imgWin.document.write(`
+            <!DOCTYPE html>
+            <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>長按圖片儲存</title>
+            <style>body{margin:0;background:#0d0d1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;}
+            img{max-width:92%;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+            p{color:#ccc;margin-top:20px;font-size:15px;}
+            a{color:#a78bfa;margin-top:16px;font-size:14px;}</style></head>
+            <body><img src="${dataUrl}" alt="結果圖"><p>📸 請長按圖片儲存</p>
+            <a href="javascript:history.back()">← 返回測驗結果</a></body></html>
+          `);
+          imgWin.document.close();
+        }
+        btn.innerHTML = origHTML;
+        btn.disabled = false;
+        return;
+      }
+
+      // 一般瀏覽器用下載方式
+      downloadCanvasImage(canvas, 'my-mental-age.png');
       btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 已儲存！';
       btn.style.borderColor = '#06C755';
       setTimeout(() => { btn.innerHTML = origHTML; btn.style.borderColor = ''; btn.disabled = false; }, 2000);
     } catch (e) {
       btn.innerHTML = origHTML;
       btn.disabled = false;
-      alert('截圖失敗，請手動截圖分享');
+      showShareToast('⚠️ 自動下載失敗，請手動截圖分享');
     }
   }
 
