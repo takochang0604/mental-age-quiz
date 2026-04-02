@@ -619,7 +619,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="nav-row">
       <button class="btn-secondary" id="btn-prev" onclick="prevQ()" disabled>← 上一題</button>
-      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>下一題 →</button>
     </div>
   </div>
 
@@ -902,7 +901,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 
     document.getElementById('btn-prev').disabled = idx === 0;
-    updateNextBtn();
 
     // animate card
     const card = document.getElementById('question-card');
@@ -916,14 +914,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.querySelectorAll('.option-btn').forEach((btn, i) => {
       btn.classList.toggle('selected', i === oi);
     });
-    updateNextBtn();
-  }
-
-  function updateNextBtn() {
-    const btn = document.getElementById('btn-next');
-    const isLast = currentQ === questions.length - 1;
-    btn.disabled = answers[currentQ] === null;
-    btn.textContent = isLast ? '看結果 ✨' : '下一題 →';
+    // 選完後自動跳下一題（延遲 500ms 讓使用者看到選取效果）
+    setTimeout(() => {
+      if (currentQ < questions.length - 1) {
+        renderQuestion(currentQ + 1);
+      } else {
+        showResult();
+      }
+    }, 500);
   }
 
   function nextQ() {
@@ -1398,7 +1396,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         shareUrl = `https://www.threads.net/intent/post?text=${fullText}`;
         break;
       case 'x':
-        shareUrl = `https://x.com/intent/post?text=${fullText}`;
+        // 嘗試用 intent scheme 開啟 X APP（Android）
+        if (/android/i.test(navigator.userAgent)) {
+          shareUrl = `intent://post?text=${fullText}#Intent;scheme=twitter;package=com.twitter.android;S.browser_fallback_url=${encodeURIComponent('https://x.com/intent/post?text=' + fullText)};end`;
+        } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+          // iOS 嘗試 twitter:// scheme
+          shareUrl = `twitter://post?message=${fullText}`;
+          setTimeout(() => { window.location.href = `https://x.com/intent/post?text=${fullText}`; }, 1500);
+        } else {
+          shareUrl = `https://x.com/intent/post?text=${fullText}`;
+        }
         break;
     }
     if (shareUrl) {
@@ -1436,18 +1443,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // LINE IAB 中 a.click() 下載通常被攔截
         // 改開圖片頁面讓使用者長按儲存
         const dataUrl = canvas.toDataURL('image/png');
+        const returnUrl = window.location.href;
         const imgWin = window.open('', '_self');
         if (imgWin) {
           imgWin.document.write(`
             <!DOCTYPE html>
             <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
             <title>長按圖片儲存</title>
-            <style>body{margin:0;background:#0d0d1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;}
+            <style>body{margin:0;background:#0d0d1a;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;padding:20px;}
             img{max-width:92%;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
             p{color:#ccc;margin-top:20px;font-size:15px;}
-            a{color:#a78bfa;margin-top:16px;font-size:14px;}</style></head>
+            a{color:#a78bfa;margin-top:16px;font-size:14px;text-decoration:none;padding:12px 24px;border:1px solid rgba(167,139,250,0.4);border-radius:999px;display:inline-block;}</style></head>
             <body><img src="${dataUrl}" alt="結果圖"><p>📸 請長按圖片儲存</p>
-            <a href="javascript:history.back()">← 返回測驗結果</a></body></html>
+            <a href="${returnUrl}">← 返回測驗結果</a></body></html>
           `);
           imgWin.document.close();
         }
